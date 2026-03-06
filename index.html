@@ -5,6 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>리니지M 제작 관리</title>
     <style>
+        .home-search-wrap{
+    margin-top:20px;
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.home-search-box{
+    width:320px;
+    max-width:80%;
+    padding:12px 14px;
+    border:1px solid #475569;
+    border-radius:10px;
+    font-size:15px;
+    background:white;
+    color:#111827;
+}
+
+.home-search-btn{
+    border:none;
+    padding:12px 18px;
+    border-radius:10px;
+    background:#10b981;
+    color:white;
+    font-size:15px;
+    cursor:pointer;
+}
+
+.home-search-btn:hover{
+    background:#059669;
+}
         body{
             margin:0;
             font-family: Arial, sans-serif;
@@ -36,16 +68,18 @@
             display:flex;
             justify-content:center;
             align-items:center;
+            background:rgba(0,0,0,0.45);
         }
 
         .window{
-            width:560px;
-            background:#1f2937;
+            width:720px;
+            background:rgba(31,41,55,0.92);
             border-radius:16px;
             box-shadow:0 10px 30px rgba(0,0,0,0.25);
             overflow:hidden;
-            border:1px solid #374151;
+            border:1px solid rgba(255,255,255,0.12);
             color:white;
+            backdrop-filter: blur(4px);
         }
 
         .title-bar{
@@ -64,22 +98,25 @@
         .content h1{
             margin-top:0;
             margin-bottom:12px;
-            font-size:32px;
+            font-size:38px;
         }
 
         .content p{
-            color:#d1d5db;
+            color:#e5e7eb;
             margin-bottom:30px;
+            line-height:1.6;
         }
 
         .menu{
-            display:grid;
-            grid-template-columns:1fr 1fr 1fr;
-            gap:10px;
+            display:flex;
+            justify-content:center;
+            gap:14px;
+            flex-wrap:wrap;
         }
 
         .menu button{
-            height:50px;
+            min-width:150px;
+            height:56px;
             border:none;
             border-radius:10px;
             background:#2563eb;
@@ -90,15 +127,6 @@
 
         .menu button:hover{
             background:#1d4ed8;
-        }
-
-        .menu .full{
-            grid-column:1 / -1;
-            background:#10b981;
-        }
-
-        .menu .full:hover{
-            background:#059669;
         }
 
         .toolbar{
@@ -137,6 +165,7 @@
         .summary{
             margin-left:auto;
             font-weight:bold;
+            color:#111827;
         }
 
         .search-box{
@@ -212,6 +241,13 @@
         .hidden-row{
             display:none;
         }
+
+        .empty-row td{
+            padding:18px;
+            color:#6b7280;
+            font-weight:bold;
+            background:#fafafa;
+        }
     </style>
 </head>
 <body>
@@ -224,14 +260,28 @@
                 <div class="title-bar">리니지M 제작 관리 프로그램</div>
                 <div class="content">
                     <h1>리니지M 제작 관리</h1>
-                    <p>변신, 인형, 성물 제작 목록을 한눈에 확인하고<br>완료 상태를 저장해 관리할 수 있습니다.</p>
+                    <p>
+                        변신, 인형, 성물 제작 목록을 한눈에 확인하고<br>
+                        완료 상태와 검색 결과를 편하게 관리할 수 있습니다.
+                    </p>
 
                     <div class="menu">
-                        <button class="full" onclick="showPage('listPage')">제작 리스트</button>
-                        <button onclick="showPage('transformPage')">변신 관리</button>
-                        <button onclick="showPage('dollPage')">인형 관리</button>
-                        <button onclick="showPage('artifactPage')">성물 관리</button>
-                    </div>
+    <button onclick="showPage('listPage')">제작 리스트</button>
+    <button onclick="showPage('transformPage')">변신 관리</button>
+    <button onclick="showPage('dollPage')">인형 관리</button>
+    <button onclick="showPage('artifactPage')">성물 관리</button>
+</div>
+
+<div class="home-search-wrap">
+    <input
+        type="text"
+        id="homeSearch"
+        class="home-search-box"
+        placeholder="이름 검색 후 제작 리스트로 이동"
+        onkeypress="if(event.key === 'Enter'){ goHomeSearch(); }"
+    >
+    <button class="home-search-btn" onclick="goHomeSearch()">검색</button>
+</div>
                 </div>
             </div>
         </div>
@@ -245,7 +295,7 @@
         </div>
 
         <div class="list-row">
-            <div class="section">
+            <div class="section list-transform-section">
                 <h2>변신</h2>
                 <table>
                     <tr>
@@ -257,34 +307,36 @@
                     </tr>
                     <tr data-key="list_transform_0" class="search-list-transform">
                         <td class="name-cell">벚꽃 소녀</td>
-                        <td><img src="images/벚꽃 소녀.png" width="90"></td>
+                        <td><img src="images/벚꽃 소녀.png" width="90" alt="벚꽃 소녀"></td>
                         <td>변신 코인</td>
                         <td>300만개</td>
                         <td><input type="checkbox"></td>
                     </tr>
                     <tr data-key="list_transform_1" class="search-list-transform">
                         <td class="name-cell">세라</td>
-                        <td><img src="images/세라.png" width="90"></td>
+                        <td><img src="images/세라.png" width="90" alt="세라"></td>
                         <td>변신 코인</td>
                         <td>250만개</td>
                         <td><input type="checkbox"></td>
                     </tr>
                     <tr data-key="list_transform_2" class="search-list-transform">
                         <td class="name-cell">키아라</td>
-                        <td><img src="images/키아라.png" width="90"></td>
+                        <td><img src="images/키아라.png" width="90" alt="키아라"></td>
                         <td>변신 코인</td>
                         <td>300만개</td>
                         <td><input type="checkbox"></td>
                     </tr>
-                    <tr class="total">
-                    <td colspan="3">총 합</td>
-                    <td id="transformTotal">850만개</td>
+                    <tr id="listTransformEmpty" class="empty-row hidden-row">
+                        <td colspan="5">검색 결과 없음</td>
                     </tr>
-                    </tr
+                    <tr class="total">
+                        <td colspan="3">총 합</td>
+                        <td id="listTransformTotal" colspan="3"></td>
+                    </tr>
                 </table>
             </div>
 
-            <div class="section">
+            <div class="section list-doll-section">
                 <h2>인형</h2>
                 <table>
                     <tr>
@@ -296,40 +348,43 @@
                     </tr>
                     <tr data-key="list_doll_0" class="search-list-doll">
                         <td class="name-cell">거대 드레이크</td>
-                        <td><img src="images/거대 드레이크.png" width="90"></td>
+                        <td><img src="images/거대 드레이크.png" width="90" alt="거대 드레이크"></td>
                         <td>인형 코인</td>
                         <td>300만개</td>
                         <td><input type="checkbox"></td>
                     </tr>
                     <tr data-key="list_doll_1" class="search-list-doll">
                         <td class="name-cell">누조어스</td>
-                        <td><img src="images/누조어스.png" width="90"></td>
+                        <td><img src="images/누조어스.png" width="90" alt="누조어스"></td>
                         <td>인형 코인</td>
                         <td>300만개</td>
                         <td><input type="checkbox"></td>
                     </tr>
                     <tr data-key="list_doll_2" class="search-list-doll">
                         <td class="name-cell">진 아이스 데몬</td>
-                        <td><img src="images/진 아이스 데몬.png" width="90"></td>
+                        <td><img src="images/진 아이스 데몬.png" width="90" alt="진 아이스 데몬"></td>
                         <td>인형 코인</td>
                         <td>300만개</td>
                         <td><input type="checkbox"></td>
                     </tr>
                     <tr data-key="list_doll_3" class="search-list-doll">
                         <td class="name-cell">타로스</td>
-                        <td><img src="images/타로스.png" width="90"></td>
+                        <td><img src="images/타로스.png" width="90" alt="타로스"></td>
                         <td>인형 코인</td>
                         <td>300만개</td>
                         <td><input type="checkbox"></td>
                     </tr>
+                    <tr id="listTransformEmpty" class="empty-row hidden-row">
+                        <td colspan="5">검색 결과 없음</td>
+                    </tr>
                     <tr class="total">
                         <td colspan="3">총 합</td>
-                        <td id="dollTotal">1200만개</td>
+                        <td id="listDollTotal" colspan="3"></td>
                     </tr>
                 </table>
             </div>
 
-            <div class="section">
+           <div class="section list-artifact-section">
                 <h2>성물</h2>
                 <table>
                     <tr>
@@ -341,14 +396,17 @@
                     </tr>
                     <tr data-key="list_artifact_0" class="search-list-artifact">
                         <td class="name-cell">로즈마리의 창</td>
-                        <td><img src="images/로즈마리의 창.png" width="90"></td>
+                        <td><img src="images/로즈마리의 창.png" width="90" alt="로즈마리의 창"></td>
                         <td>성물 코인</td>
                         <td>300만개</td>
                         <td><input type="checkbox"></td>
                     </tr>
+                   <tr id="listTransformEmpty" class="empty-row hidden-row">
+                        <td colspan="5">검색 결과 없음</td>
+                    </tr>
                     <tr class="total">
-                        <td colspan="4">총 합</td>
-                        <td>300만개</td>
+                        <td colspan="3">총 합</td>
+                        <td id="listArtifactTotal" colspan="3"></td>
                     </tr>
                 </table>
             </div>
@@ -376,29 +434,31 @@
                 </tr>
                 <tr data-group="transform" data-key="transform_0">
                     <td class="name-cell">벚꽃 소녀</td>
-                    <td><img src="images/벚꽃 소녀.png" width="90"></td>
+                    <td><img src="images/벚꽃 소녀.png" width="90" alt="벚꽃 소녀"></td>
                     <td>변신 코인</td>
                     <td>300만개</td>
                     <td><input type="checkbox"></td>
                 </tr>
                 <tr data-group="transform" data-key="transform_1">
                     <td class="name-cell">세라</td>
-                    <td><img src="images/세라.png" width="90"></td>
+                    <td><img src="images/세라.png" width="90" alt="세라"></td>
                     <td>변신 코인</td>
                     <td>250만개</td>
                     <td><input type="checkbox"></td>
                 </tr>
                 <tr data-group="transform" data-key="transform_2">
                     <td class="name-cell">키아라</td>
-                    <td><img src="images/키아라.png" width="90"></td>
+                    <td><img src="images/키아라.png" width="90" alt="키아라"></td>
                     <td>변신 코인</td>
                     <td>300만개</td>
                     <td><input type="checkbox"></td>
                 </tr>
-                <tr class="total">
-                    <td colspan="3">총 합</td>
-                    <td>850만개</td>
-                    <td>-</td>
+                <tr id="listTransformEmpty" class="empty-row hidden-row">
+                        <td colspan="5">검색 결과 없음</td>
+                    </tr>
+                   <tr class="total">
+    <td colspan="3">총 합</td>
+    <td id="transformTotal" colspan="3"></td>
                 </tr>
             </table>
         </div>
@@ -425,37 +485,39 @@
                 </tr>
                 <tr data-group="doll" data-key="doll_0">
                     <td class="name-cell">거대 드레이크</td>
-                    <td><img src="images/거대 드레이크.png" width="90"></td>
+                    <td><img src="images/거대 드레이크.png" width="90" alt="거대 드레이크"></td>
                     <td>인형 코인</td>
                     <td>300만개</td>
                     <td><input type="checkbox"></td>
                 </tr>
                 <tr data-group="doll" data-key="doll_1">
                     <td class="name-cell">누조어스</td>
-                    <td><img src="images/누조어스.png" width="90"></td>
+                    <td><img src="images/누조어스.png" width="90" alt="누조어스"></td>
                     <td>인형 코인</td>
                     <td>300만개</td>
                     <td><input type="checkbox"></td>
                 </tr>
                 <tr data-group="doll" data-key="doll_2">
                     <td class="name-cell">진 아이스 데몬</td>
-                    <td><img src="images/진 아이스 데몬.png" width="90"></td>
+                    <td><img src="images/진 아이스 데몬.png" width="90" alt="진 아이스 데몬"></td>
                     <td>인형 코인</td>
                     <td>300만개</td>
                     <td><input type="checkbox"></td>
                 </tr>
                 <tr data-group="doll" data-key="doll_3">
                     <td class="name-cell">타로스</td>
-                    <td><img src="images/타로스.png" width="90"></td>
+                    <td><img src="images/타로스.png" width="90" alt="타로스"></td>
                     <td>인형 코인</td>
                     <td>300만개</td>
                     <td><input type="checkbox"></td>
                 </tr>
-                <tr class="total">
-                    <td colspan="3">총 합</td>
-                    <td>1200만개</td>
-                    <td>-</td>
+                <tr id="dollEmpty" class="empty-row hidden-row">
+                    <td colspan="5">검색 결과 없음</td>
                 </tr>
+                    <tr class="total">
+    <td colspan="3">총 합</td>
+    <td id="dollTotal" colspan="3"></td>
+</tr>
             </table>
         </div>
     </div>
@@ -481,26 +543,95 @@
                 </tr>
                 <tr data-group="artifact" data-key="artifact_0">
                     <td class="name-cell">로즈마리의 창</td>
-                    <td><img src="images/로즈마리의 창.png" width="90"></td>
+                    <td><img src="images/로즈마리의 창.png" width="90" alt="로즈마리의 창"></td>
                     <td>성물 코인</td>
                     <td>300만개</td>
                     <td><input type="checkbox"></td>
                 </tr>
-                <tr class="total">
-                    <td colspan="3">총 합</td>
-                    <td>300만개</td>
-                    <td>-</td>
+                <tr id="artifactEmpty" class="empty-row hidden-row">
+                    <td colspan="5">검색 결과 없음</td>
                 </tr>
+                <tr class="total">
+    <td colspan="3">총 합</td>
+    <td id="artifactTotal" colspan="3"></td>
+</tr>
             </table>
         </div>
     </div>
 
     <script>
+        function updateListSectionVisibility(){
+    const transformVisible = document.querySelectorAll("#listPage tr.search-list-transform:not(.hidden-row)").length;
+    const dollVisible = document.querySelectorAll("#listPage tr.search-list-doll:not(.hidden-row)").length;
+    const artifactVisible = document.querySelectorAll("#listPage tr.search-list-artifact:not(.hidden-row)").length;
+
+    const transformSection = document.querySelector(".list-transform-section");
+    const dollSection = document.querySelector(".list-doll-section");
+    const artifactSection = document.querySelector(".list-artifact-section");
+
+    if(transformSection){
+        transformSection.style.display = transformVisible > 0 ? "" : "none";
+    }
+
+    if(dollSection){
+        dollSection.style.display = dollVisible > 0 ? "" : "none";
+    }
+
+    if(artifactSection){
+        artifactSection.style.display = artifactVisible > 0 ? "" : "none";
+    }
+}
+function goHomeSearch(){
+    const homeInput = document.getElementById("homeSearch");
+    const listInput = document.getElementById("listSearch");
+
+    if(homeInput && listInput){
+        const keyword = homeInput.value.toLowerCase().trim();
+        showPage("listPage");
+
+        const rows = document.querySelectorAll("#listPage tr[data-key]");
+        rows.forEach(row => {
+            const name = row.querySelector(".name-cell").textContent.toLowerCase();
+
+            if(name.includes(keyword)){
+                row.classList.remove("hidden-row");
+            }else{
+                row.classList.add("hidden-row");
+            }
+        });
+
+        listInput.value = "";
+        updateListTotals();
+        updateListSectionVisibility();
+    }
+}
         function showPage(pageId){
-            const pages = document.querySelectorAll(".page");
-            pages.forEach(page => page.classList.remove("active"));
-            document.getElementById(pageId).classList.add("active");
+    const pages = document.querySelectorAll(".page");
+    pages.forEach(page => page.classList.remove("active"));
+    document.getElementById(pageId).classList.add("active");
+
+    // 제작 리스트 초기화
+    if(pageId === "listPage"){
+        const listInput = document.getElementById("listSearch");
+        if(listInput){
+            listInput.value = "";
         }
+
+        const rows = document.querySelectorAll("#listPage tr[data-key]");
+        rows.forEach(row => row.classList.remove("hidden-row"));
+
+        updateListTotals();
+        updateListSectionVisibility();
+    }
+
+    // 홈 검색창 초기화
+    if(pageId === "homePage"){
+        const homeInput = document.getElementById("homeSearch");
+        if(homeInput){
+            homeInput.value = "";
+        }
+    }
+}
 
         function updateCounts(){
             const transformChecked = document.querySelectorAll("tr[data-group='transform'] input[type='checkbox']:checked").length;
@@ -529,8 +660,92 @@
             }
         }
 
+        function parseAmount(text){
+            return Number(text.replace("만개", "").replace(/,/g, "").trim()) || 0;
+        }
+
+        function formatAmount(value){
+            return value + "만개";
+        }
+
+        function updateEmptyState(rowsSelector, emptyRowId){
+            const rows = document.querySelectorAll(rowsSelector);
+            let visibleCount = 0;
+
+            rows.forEach(row => {
+                if(!row.classList.contains("hidden-row")){
+                    visibleCount++;
+                }
+            });
+
+            const emptyRow = document.getElementById(emptyRowId);
+            if(emptyRow){
+                if(visibleCount === 0){
+                    emptyRow.classList.remove("hidden-row");
+                }else{
+                    emptyRow.classList.add("hidden-row");
+                }
+            }
+        }
+
+        function updateGroupTotal(groupName){
+            const rows = document.querySelectorAll("tr[data-group='" + groupName + "']");
+            let total = 0;
+
+            rows.forEach(row => {
+                if(!row.classList.contains("hidden-row")){
+                    const amountText = row.children[3].textContent;
+                    total += parseAmount(amountText);
+                }
+            });
+
+            const totalCell = document.getElementById(groupName + "Total");
+            if(totalCell){
+                totalCell.textContent = formatAmount(total);
+            }
+
+            updateEmptyState("tr[data-group='" + groupName + "']", groupName + "Empty");
+        }
+
+        function updateListTotals(){
+            let transformTotal = 0;
+            let dollTotal = 0;
+            let artifactTotal = 0;
+
+            const transformRows = document.querySelectorAll("#listPage tr.search-list-transform");
+            const dollRows = document.querySelectorAll("#listPage tr.search-list-doll");
+            const artifactRows = document.querySelectorAll("#listPage tr.search-list-artifact");
+
+            transformRows.forEach(row => {
+                if(!row.classList.contains("hidden-row")){
+                    transformTotal += parseAmount(row.children[3].textContent);
+                }
+            });
+
+            dollRows.forEach(row => {
+                if(!row.classList.contains("hidden-row")){
+                    dollTotal += parseAmount(row.children[3].textContent);
+                }
+            });
+
+            artifactRows.forEach(row => {
+                if(!row.classList.contains("hidden-row")){
+                    artifactTotal += parseAmount(row.children[3].textContent);
+                }
+            });
+
+            document.getElementById("listTransformTotal").textContent = formatAmount(transformTotal);
+            document.getElementById("listDollTotal").textContent = formatAmount(dollTotal);
+            document.getElementById("listArtifactTotal").textContent = formatAmount(artifactTotal);
+
+            updateEmptyState("#listPage tr.search-list-transform", "listTransformEmpty");
+            updateEmptyState("#listPage tr.search-list-doll", "listDollEmpty");
+            updateEmptyState("#listPage tr.search-list-artifact", "listArtifactEmpty");
+        }
+
         function loadCheckboxState(){
             const rows = document.querySelectorAll("tr[data-key]");
+
             rows.forEach(row => {
                 const key = row.dataset.key;
                 const checkbox = row.querySelector("input[type='checkbox']");
@@ -551,6 +766,7 @@
 
         function resetGroup(groupName){
             const rows = document.querySelectorAll("tr[data-group='" + groupName + "']");
+
             rows.forEach(row => {
                 const key = row.dataset.key;
                 const checkbox = row.querySelector("input[type='checkbox']");
@@ -558,7 +774,9 @@
                 row.classList.remove("done-row");
                 localStorage.removeItem("lineage_" + key);
             });
+
             updateCounts();
+            updateGroupTotal(groupName);
         }
 
         function filterGroup(groupName){
@@ -568,38 +786,40 @@
 
             rows.forEach(row => {
                 const name = row.querySelector(".name-cell").textContent.toLowerCase();
+
                 if(name.includes(keyword)){
                     row.classList.remove("hidden-row");
                 }else{
                     row.classList.add("hidden-row");
                 }
             });
+
+            updateGroupTotal(groupName);
         }
 
-        function filterListPage(){
-            const keyword = document.getElementById("listSearch").value.toLowerCase().trim();
-            const rows = document.querySelectorAll("#listPage tr[data-key]");
+function filterListPage(){
+    const keyword = document.getElementById("listSearch").value.toLowerCase().trim();
+    const rows = document.querySelectorAll("#listPage tr[data-key]");
 
-            rows.forEach(row => {
-                const name = row.querySelector(".name-cell").textContent.toLowerCase();
-                if(name.includes(keyword)){
-                    row.classList.remove("hidden-row");
-                }else{
-                    row.classList.add("hidden-row");
-                }
-            });
+    rows.forEach(row => {
+        const name = row.querySelector(".name-cell").textContent.toLowerCase();
+
+        if(name.includes(keyword)){
+            row.classList.remove("hidden-row");
+        }else{
+            row.classList.add("hidden-row");
         }
+    });
+
+    updateListTotals();
+    updateListSectionVisibility();
+}
 
         loadCheckboxState();
+        updateGroupTotal("transform");
+        updateGroupTotal("doll");
+        updateGroupTotal("artifact");
+        updateListTotals();
     </script>
 </body>
-
 </html>
-
-
-
-
-
-
-
-
