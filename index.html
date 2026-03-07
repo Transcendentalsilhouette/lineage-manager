@@ -224,11 +224,14 @@
             display:flex;
             gap:24px;
             align-items:flex-start;
+            justify-content:center;
             flex-wrap:wrap;
         }
 
-        .list-row .section{
-            min-width:520px;
+        .list-card{
+            flex:1 1 480px;
+            max-width:520px;
+            min-width:380px;
         }
 
         h2{
@@ -240,12 +243,23 @@
             border-collapse:collapse;
             text-align:center;
             background:white;
-            min-width:720px;
             width:100%;
         }
 
-        .list-row table{
-            min-width:520px;
+        .list-card table{
+            table-layout:fixed;
+        }
+
+        .list-card th,
+        .list-card td{
+            padding:6px;
+            font-size:14px;
+            word-break:keep-all;
+        }
+
+        .list-card img{
+            width:72px;
+            height:auto;
         }
 
         th{
@@ -270,6 +284,8 @@
         img{
             display:block;
             margin:auto;
+            max-width:100%;
+            height:auto;
         }
 
         .hidden-row{
@@ -282,11 +298,36 @@
             font-weight:bold;
             background:#fafafa;
         }
+
+        .manage-wrap{
+            max-width:1200px;
+            margin:0 auto;
+        }
+
+        .manage-wrap .section{
+            margin-left:0;
+            margin-right:0;
+        }
+
+        .manage-row{
+            display:flex;
+            gap:24px;
+            align-items:flex-start;
+            justify-content:center;
+            flex-wrap:wrap;
+        }
+
+        .manage-col{
+            flex:1 1 480px;
+            max-width:560px;
+            min-width:380px;
+        }
     </style>
 </head>
 <body>
     <div class="topbar">리니지M 제작 관리</div>
 
+    <!-- 홈 -->
     <div id="homePage" class="page active">
         <div class="home-wrap">
             <div class="window">
@@ -326,6 +367,7 @@
         </div>
     </div>
 
+    <!-- 제작 리스트 -->
     <div id="listPage" class="page">
         <div class="toolbar">
             <button class="btn btn-home" onclick="showPage('homePage')">← 처음 화면</button>
@@ -333,387 +375,423 @@
         </div>
 
         <div class="list-row">
-            <div class="section list-transform-section">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                    <h2 style="margin:0;">변신</h2>
-                    <button class="btn btn-reset" onclick="resetGroup('transform')">변신 초기화</button>
+            <!-- 변신 카드 -->
+            <div class="list-card">
+                <div class="section list-transform-section">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                        <h2 style="margin:0;">변신</h2>
+                        <button class="btn btn-reset" onclick="resetGroup('transform')">변신 초기화</button>
+                    </div>
+                    <table>
+                        <tr>
+                            <th>이 름</th>
+                            <th>이미지</th>
+                            <th>재 료</th>
+                            <th>수 량</th>
+                            <th>완 료</th>
+                        </tr>
+                        <tr data-key="transform_0" class="search-list-transform">
+                            <td class="name-cell">벚꽃 소녀</td>
+                            <td><img src="images/벚꽃 소녀.png" alt="벚꽃 소녀"></td>
+                            <td>변신 코인</td>
+                            <td>300만개</td>
+                            <td><input type="checkbox"></td>
+                        </tr>
+                        <tr data-key="transform_1" class="search-list-transform">
+                            <td class="name-cell">세라</td>
+                            <td><img src="images/세라.png" alt="세라"></td>
+                            <td>변신 코인</td>
+                            <td>250만개</td>
+                            <td><input type="checkbox"></td>
+                        </tr>
+                        <tr data-key="transform_2" class="search-list-transform">
+                            <td class="name-cell">키아라</td>
+                            <td><img src="images/키아라.png" alt="키아라"></td>
+                            <td>변신 코인</td>
+                            <td>300만개</td>
+                            <td><input type="checkbox"></td>
+                        </tr>
+                        <tr id="listTransformEmpty" class="empty-row hidden-row">
+                            <td colspan="5">검색 결과 없음</td>
+                        </tr>
+                        <tr class="total">
+                            <td colspan="3">총 합</td>
+                            <td id="listTransformTotal"></td>
+                            <td>-</td>
+                        </tr>
+                    </table>
                 </div>
-                <table>
-                    <tr>
-                        <th>이 름</th>
-                        <th>이미지</th>
-                        <th>재 료</th>
-                        <th>수 량</th>
-                        <th>완 료</th>
-                    </tr>
-                    <tr data-key="transform_0" class="search-list-transform">
-                        <td class="name-cell">벚꽃 소녀</td>
-                        <td><img src="images/벚꽃 소녀.png" width="90" alt="벚꽃 소녀"></td>
-                        <td>변신 코인</td>
-                        <td>300만개</td>
-                        <td><input type="checkbox"></td>
-                    </tr>
-                    <tr data-key="transform_1" class="search-list-transform">
-                        <td class="name-cell">세라</td>
-                        <td><img src="images/세라.png" width="90" alt="세라"></td>
-                        <td>변신 코인</td>
-                        <td>250만개</td>
-                        <td><input type="checkbox"></td>
-                    </tr>
-                    <tr data-key="transform_2" class="search-list-transform">
-                        <td class="name-cell">키아라</td>
-                        <td><img src="images/키아라.png" width="90" alt="키아라"></td>
-                        <td>변신 코인</td>
-                        <td>300만개</td>
-                        <td><input type="checkbox"></td>
-                    </tr>
-                    <tr id="listTransformEmpty" class="empty-row hidden-row">
-                        <td colspan="5">검색 결과 없음</td>
-                    </tr>
-                    <tr class="total">
-                        <td colspan="3">총 합</td>
-                        <td id="listTransformTotal"></td>
-                        <td>-</td>
-                    </tr>
-                </table>
+
+                <div class="section">
+                    <h2>완료된 변신</h2>
+                    <table>
+                        <tr>
+                            <th>이 름</th>
+                            <th>이미지</th>
+                            <th>재 료</th>
+                            <th>수 량</th>
+                            <th>완 료</th>
+                        </tr>
+                        <tbody id="listTransformCompletedList">
+                            <tr>
+                                <td colspan="5">완료된 항목 없음</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
-            <div class="section list-doll-section">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                    <h2 style="margin:0;">인형</h2>
-                    <button class="btn btn-reset" onclick="resetGroup('doll')">인형 초기화</button>
+            <!-- 인형 카드 -->
+            <div class="list-card">
+                <div class="section list-doll-section">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                        <h2 style="margin:0;">인형</h2>
+                        <button class="btn btn-reset" onclick="resetGroup('doll')">인형 초기화</button>
+                    </div>
+                    <table>
+                        <tr>
+                            <th>이 름</th>
+                            <th>이미지</th>
+                            <th>재 료</th>
+                            <th>수 량</th>
+                            <th>완 료</th>
+                        </tr>
+                        <tr data-key="doll_0" class="search-list-doll">
+                            <td class="name-cell">거대 드레이크</td>
+                            <td><img src="images/거대 드레이크.png" alt="거대 드레이크"></td>
+                            <td>인형 코인</td>
+                            <td>300만개</td>
+                            <td><input type="checkbox"></td>
+                        </tr>
+                        <tr data-key="doll_1" class="search-list-doll">
+                            <td class="name-cell">누조어스</td>
+                            <td><img src="images/누조어스.png" alt="누조어스"></td>
+                            <td>인형 코인</td>
+                            <td>300만개</td>
+                            <td><input type="checkbox"></td>
+                        </tr>
+                        <tr data-key="doll_2" class="search-list-doll">
+                            <td class="name-cell">진 아이스 데몬</td>
+                            <td><img src="images/진 아이스 데몬.png" alt="진 아이스 데몬"></td>
+                            <td>인형 코인</td>
+                            <td>300만개</td>
+                            <td><input type="checkbox"></td>
+                        </tr>
+                        <tr data-key="doll_3" class="search-list-doll">
+                            <td class="name-cell">타로스</td>
+                            <td><img src="images/타로스.png" alt="타로스"></td>
+                            <td>인형 코인</td>
+                            <td>300만개</td>
+                            <td><input type="checkbox"></td>
+                        </tr>
+                        <tr id="listDollEmpty" class="empty-row hidden-row">
+                            <td colspan="5">검색 결과 없음</td>
+                        </tr>
+                        <tr class="total">
+                            <td colspan="3">총 합</td>
+                            <td id="listDollTotal"></td>
+                            <td>-</td>
+                        </tr>
+                    </table>
                 </div>
-                <table>
-                    <tr>
-                        <th>이 름</th>
-                        <th>이미지</th>
-                        <th>재 료</th>
-                        <th>수 량</th>
-                        <th>완 료</th>
-                    </tr>
-                    <tr data-key="doll_0" class="search-list-doll">
-                        <td class="name-cell">거대 드레이크</td>
-                        <td><img src="images/거대 드레이크.png" width="90" alt="거대 드레이크"></td>
-                        <td>인형 코인</td>
-                        <td>300만개</td>
-                        <td><input type="checkbox"></td>
-                    </tr>
-                    <tr data-key="doll_1" class="search-list-doll">
-                        <td class="name-cell">누조어스</td>
-                        <td><img src="images/누조어스.png" width="90" alt="누조어스"></td>
-                        <td>인형 코인</td>
-                        <td>300만개</td>
-                        <td><input type="checkbox"></td>
-                    </tr>
-                    <tr data-key="doll_2" class="search-list-doll">
-                        <td class="name-cell">진 아이스 데몬</td>
-                        <td><img src="images/진 아이스 데몬.png" width="90" alt="진 아이스 데몬"></td>
-                        <td>인형 코인</td>
-                        <td>300만개</td>
-                        <td><input type="checkbox"></td>
-                    </tr>
-                    <tr data-key="doll_3" class="search-list-doll">
-                        <td class="name-cell">타로스</td>
-                        <td><img src="images/타로스.png" width="90" alt="타로스"></td>
-                        <td>인형 코인</td>
-                        <td>300만개</td>
-                        <td><input type="checkbox"></td>
-                    </tr>
-                    <tr id="listDollEmpty" class="empty-row hidden-row">
-                        <td colspan="5">검색 결과 없음</td>
-                    </tr>
-                    <tr class="total">
-                        <td colspan="3">총 합</td>
-                        <td id="listDollTotal"></td>
-                        <td>-</td>
-                    </tr>
-                </table>
+
+                <div class="section">
+                    <h2>완료된 인형</h2>
+                    <table>
+                        <tr>
+                            <th>이 름</th>
+                            <th>이미지</th>
+                            <th>재 료</th>
+                            <th>수 량</th>
+                            <th>완 료</th>
+                        </tr>
+                        <tbody id="listDollCompletedList">
+                            <tr>
+                                <td colspan="5">완료된 항목 없음</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
-            <div class="section list-artifact-section">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                    <h2 style="margin:0;">성물</h2>
-                    <button class="btn btn-reset" onclick="resetGroup('artifact')">성물 초기화</button>
+            <!-- 성물 카드 -->
+            <div class="list-card">
+                <div class="section list-artifact-section">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                        <h2 style="margin:0;">성물</h2>
+                        <button class="btn btn-reset" onclick="resetGroup('artifact')">성물 초기화</button>
+                    </div>
+                    <table>
+                        <tr>
+                            <th>이 름</th>
+                            <th>이미지</th>
+                            <th>재 료</th>
+                            <th>수 량</th>
+                            <th>완 료</th>
+                        </tr>
+                        <tr data-key="artifact_0" class="search-list-artifact">
+                            <td class="name-cell">로즈마리의 창</td>
+                            <td><img src="images/로즈마리의 창.png" alt="로즈마리의 창"></td>
+                            <td>성물 코인</td>
+                            <td>300만개</td>
+                            <td><input type="checkbox"></td>
+                        </tr>
+                        <tr id="listArtifactEmpty" class="empty-row hidden-row">
+                            <td colspan="5">검색 결과 없음</td>
+                        </tr>
+                        <tr class="total">
+                            <td colspan="3">총 합</td>
+                            <td id="listArtifactTotal"></td>
+                            <td>-</td>
+                        </tr>
+                    </table>
                 </div>
-                <table>
-                    <tr>
-                        <th>이 름</th>
-                        <th>이미지</th>
-                        <th>재 료</th>
-                        <th>수 량</th>
-                        <th>완 료</th>
-                    </tr>
-                    <tr data-key="artifact_0" class="search-list-artifact">
-                        <td class="name-cell">로즈마리의 창</td>
-                        <td><img src="images/로즈마리의 창.png" width="90" alt="로즈마리의 창"></td>
-                        <td>성물 코인</td>
-                        <td>300만개</td>
-                        <td><input type="checkbox"></td>
-                    </tr>
-                    <tr id="listArtifactEmpty" class="empty-row hidden-row">
-                        <td colspan="5">검색 결과 없음</td>
-                    </tr>
-                    <tr class="total">
-                        <td colspan="3">총 합</td>
-                        <td id="listArtifactTotal"></td>
-                        <td>-</td>
-                    </tr>
-                </table>
+
+                <div class="section">
+                    <h2>완료된 성물</h2>
+                    <table>
+                        <tr>
+                            <th>이 름</th>
+                            <th>이미지</th>
+                            <th>재 료</th>
+                            <th>수 량</th>
+                            <th>완 료</th>
+                        </tr>
+                        <tbody id="listArtifactCompletedList">
+                            <tr>
+                                <td colspan="5">완료된 항목 없음</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
-
-        <div class="section" style="margin-top:20px;">
-            <h2>완료된 변신</h2>
-            <table>
-                <tr>
-                    <th>이 름</th>
-                    <th>이미지</th>
-                    <th>재 료</th>
-                    <th>수 량</th>
-                    <th>완 료</th>
-                </tr>
-                <tbody id="listTransformCompletedList">
-                    <tr>
-                        <td colspan="5">완료된 항목 없음</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="section" style="margin-top:20px;">
-            <h2>완료된 인형</h2>
-            <table>
-                <tr>
-                    <th>이 름</th>
-                    <th>이미지</th>
-                    <th>재 료</th>
-                    <th>수 량</th>
-                    <th>완 료</th>
-                </tr>
-                <tbody id="listDollCompletedList">
-                    <tr>
-                        <td colspan="5">완료된 항목 없음</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="section" style="margin-top:20px;">
-            <h2>완료된 성물</h2>
-            <table>
-                <tr>
-                    <th>이 름</th>
-                    <th>이미지</th>
-                    <th>재 료</th>
-                    <th>수 량</th>
-                    <th>완 료</th>
-                </tr>
-                <tbody id="listArtifactCompletedList">
-                    <tr>
-                        <td colspan="5">완료된 항목 없음</td>
-                    </tr>
-                </tbody>
-            </table>
         </div>
     </div>
 
+    <!-- 변신 관리 -->
     <div id="transformPage" class="page">
-        <div class="toolbar">
-            <button class="btn btn-home" onclick="showPage('homePage')">← 처음 화면</button>
-            <button class="btn btn-reset" onclick="resetGroup('transform')">변신 초기화</button>
-            <input type="text" id="transformSearch" class="search-box" placeholder="변신 이름 검색" onkeyup="filterGroup('transform')">
-            <div class="summary">완료 개수: <span id="transformCount">0</span> / 3</div>
-        </div>
+        <div class="manage-wrap">
+            <div class="toolbar">
+                <button class="btn btn-home" onclick="showPage('homePage')">← 처음 화면</button>
+                <button class="btn btn-reset" onclick="resetGroup('transform')">변신 초기화</button>
+                <input type="text" id="transformSearch" class="search-box" placeholder="변신 이름 검색" onkeyup="filterGroup('transform')">
+                <div class="summary">완료 개수: <span id="transformCount">0</span> / 3</div>
+            </div>
 
-        <div class="section">
-            <h2>변신 관리</h2>
-            <table>
-                <tr>
-                    <th>이 름</th>
-                    <th>이미지</th>
-                    <th>재 료</th>
-                    <th>수 량</th>
-                    <th>완 료</th>
-                </tr>
-                <tr data-group="transform" data-key="transform_0">
-                    <td class="name-cell">벚꽃 소녀</td>
-                    <td><img src="images/벚꽃 소녀.png" width="90" alt="벚꽃 소녀"></td>
-                    <td>변신 코인</td>
-                    <td>300만개</td>
-                    <td><input type="checkbox"></td>
-                </tr>
-                <tr data-group="transform" data-key="transform_1">
-                    <td class="name-cell">세라</td>
-                    <td><img src="images/세라.png" width="90" alt="세라"></td>
-                    <td>변신 코인</td>
-                    <td>250만개</td>
-                    <td><input type="checkbox"></td>
-                </tr>
-                <tr data-group="transform" data-key="transform_2">
-                    <td class="name-cell">키아라</td>
-                    <td><img src="images/키아라.png" width="90" alt="키아라"></td>
-                    <td>변신 코인</td>
-                    <td>300만개</td>
-                    <td><input type="checkbox"></td>
-                </tr>
-                <tr id="transformEmpty" class="empty-row hidden-row">
-                    <td colspan="5">검색 결과 없음</td>
-                </tr>
-                <tr class="total">
-                    <td colspan="3">총 합</td>
-                    <td id="transformTotal"></td>
-                    <td>-</td>
-                </tr>
-            </table>
-        </div>
+            <div class="manage-row">
+                <div class="manage-col">
+                    <div class="section">
+                        <h2>변신 관리</h2>
+                        <table>
+                            <tr>
+                                <th>이 름</th>
+                                <th>이미지</th>
+                                <th>재 료</th>
+                                <th>수 량</th>
+                                <th>완 료</th>
+                            </tr>
+                            <tr data-group="transform" data-key="transform_0">
+                                <td class="name-cell">벚꽃 소녀</td>
+                                <td><img src="images/벚꽃 소녀.png" alt="벚꽃 소녀"></td>
+                                <td>변신 코인</td>
+                                <td>300만개</td>
+                                <td><input type="checkbox"></td>
+                            </tr>
+                            <tr data-group="transform" data-key="transform_1">
+                                <td class="name-cell">세라</td>
+                                <td><img src="images/세라.png" alt="세라"></td>
+                                <td>변신 코인</td>
+                                <td>250만개</td>
+                                <td><input type="checkbox"></td>
+                            </tr>
+                            <tr data-group="transform" data-key="transform_2">
+                                <td class="name-cell">키아라</td>
+                                <td><img src="images/키아라.png" alt="키아라"></td>
+                                <td>변신 코인</td>
+                                <td>300만개</td>
+                                <td><input type="checkbox"></td>
+                            </tr>
+                            <tr id="transformEmpty" class="empty-row hidden-row">
+                                <td colspan="5">검색 결과 없음</td>
+                            </tr>
+                            <tr class="total">
+                                <td colspan="3">총 합</td>
+                                <td id="transformTotal"></td>
+                                <td>-</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
 
-        <div class="section" style="margin-top:20px;">
-            <h2>완료된 변신</h2>
-            <table>
-                <tr>
-                    <th>이 름</th>
-                    <th>이미지</th>
-                    <th>재 료</th>
-                    <th>수 량</th>
-                    <th>완 료</th>
-                </tr>
-                <tbody id="transformCompletedList">
-                    <tr>
-                        <td colspan="5">완료된 항목 없음</td>
-                    </tr>
-                </tbody>
-            </table>
+                <div class="manage-col">
+                    <div class="section">
+                        <h2>완료된 변신</h2>
+                        <table>
+                            <tr>
+                                <th>이 름</th>
+                                <th>이미지</th>
+                                <th>재 료</th>
+                                <th>수 량</th>
+                                <th>완 료</th>
+                            </tr>
+                            <tbody id="transformCompletedList">
+                                <tr>
+                                    <td colspan="5">완료된 항목 없음</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
+    <!-- 인형 관리 -->
     <div id="dollPage" class="page">
-        <div class="toolbar">
-            <button class="btn btn-home" onclick="showPage('homePage')">← 처음 화면</button>
-            <button class="btn btn-reset" onclick="resetGroup('doll')">인형 초기화</button>
-            <input type="text" id="dollSearch" class="search-box" placeholder="인형 이름 검색" onkeyup="filterGroup('doll')">
-            <div class="summary">완료 개수: <span id="dollCount">0</span> / 4</div>
-        </div>
+        <div class="manage-wrap">
+            <div class="toolbar">
+                <button class="btn btn-home" onclick="showPage('homePage')">← 처음 화면</button>
+                <button class="btn btn-reset" onclick="resetGroup('doll')">인형 초기화</button>
+                <input type="text" id="dollSearch" class="search-box" placeholder="인형 이름 검색" onkeyup="filterGroup('doll')">
+                <div class="summary">완료 개수: <span id="dollCount">0</span> / 4</div>
+            </div>
 
-        <div class="section">
-            <h2>인형 관리</h2>
-            <table>
-                <tr>
-                    <th>이 름</th>
-                    <th>이미지</th>
-                    <th>재 료</th>
-                    <th>수 량</th>
-                    <th>완 료</th>
-                </tr>
-                <tr data-group="doll" data-key="doll_0">
-                    <td class="name-cell">거대 드레이크</td>
-                    <td><img src="images/거대 드레이크.png" width="90" alt="거대 드레이크"></td>
-                    <td>인형 코인</td>
-                    <td>300만개</td>
-                    <td><input type="checkbox"></td>
-                </tr>
-                <tr data-group="doll" data-key="doll_1">
-                    <td class="name-cell">누조어스</td>
-                    <td><img src="images/누조어스.png" width="90" alt="누조어스"></td>
-                    <td>인형 코인</td>
-                    <td>300만개</td>
-                    <td><input type="checkbox"></td>
-                </tr>
-                <tr data-group="doll" data-key="doll_2">
-                    <td class="name-cell">진 아이스 데몬</td>
-                    <td><img src="images/진 아이스 데몬.png" width="90" alt="진 아이스 데몬"></td>
-                    <td>인형 코인</td>
-                    <td>300만개</td>
-                    <td><input type="checkbox"></td>
-                </tr>
-                <tr data-group="doll" data-key="doll_3">
-                    <td class="name-cell">타로스</td>
-                    <td><img src="images/타로스.png" width="90" alt="타로스"></td>
-                    <td>인형 코인</td>
-                    <td>300만개</td>
-                    <td><input type="checkbox"></td>
-                </tr>
-                <tr id="dollEmpty" class="empty-row hidden-row">
-                    <td colspan="5">검색 결과 없음</td>
-                </tr>
-                <tr class="total">
-                    <td colspan="3">총 합</td>
-                    <td id="dollTotal"></td>
-                    <td>-</td>
-                </tr>
-            </table>
-        </div>
+            <div class="manage-row">
+                <div class="manage-col">
+                    <div class="section">
+                        <h2>인형 관리</h2>
+                        <table>
+                            <tr>
+                                <th>이 름</th>
+                                <th>이미지</th>
+                                <th>재 료</th>
+                                <th>수 량</th>
+                                <th>완 료</th>
+                            </tr>
+                            <tr data-group="doll" data-key="doll_0">
+                                <td class="name-cell">거대 드레이크</td>
+                                <td><img src="images/거대 드레이크.png" alt="거대 드레이크"></td>
+                                <td>인형 코인</td>
+                                <td>300만개</td>
+                                <td><input type="checkbox"></td>
+                            </tr>
+                            <tr data-group="doll" data-key="doll_1">
+                                <td class="name-cell">누조어스</td>
+                                <td><img src="images/누조어스.png" alt="누조어스"></td>
+                                <td>인형 코인</td>
+                                <td>300만개</td>
+                                <td><input type="checkbox"></td>
+                            </tr>
+                            <tr data-group="doll" data-key="doll_2">
+                                <td class="name-cell">진 아이스 데몬</td>
+                                <td><img src="images/진 아이스 데몬.png" alt="진 아이스 데몬"></td>
+                                <td>인형 코인</td>
+                                <td>300만개</td>
+                                <td><input type="checkbox"></td>
+                            </tr>
+                            <tr data-group="doll" data-key="doll_3">
+                                <td class="name-cell">타로스</td>
+                                <td><img src="images/타로스.png" alt="타로스"></td>
+                                <td>인형 코인</td>
+                                <td>300만개</td>
+                                <td><input type="checkbox"></td>
+                            </tr>
+                            <tr id="dollEmpty" class="empty-row hidden-row">
+                                <td colspan="5">검색 결과 없음</td>
+                            </tr>
+                            <tr class="total">
+                                <td colspan="3">총 합</td>
+                                <td id="dollTotal"></td>
+                                <td>-</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
 
-        <div class="section" style="margin-top:20px;">
-            <h2>완료된 인형</h2>
-            <table>
-                <tr>
-                    <th>이 름</th>
-                    <th>이미지</th>
-                    <th>재 료</th>
-                    <th>수 량</th>
-                    <th>완 료</th>
-                </tr>
-                <tbody id="dollCompletedList">
-                    <tr>
-                        <td colspan="5">완료된 항목 없음</td>
-                    </tr>
-                </tbody>
-            </table>
+                <div class="manage-col">
+                    <div class="section">
+                        <h2>완료된 인형</h2>
+                        <table>
+                            <tr>
+                                <th>이 름</th>
+                                <th>이미지</th>
+                                <th>재 료</th>
+                                <th>수 량</th>
+                                <th>완 료</th>
+                            </tr>
+                            <tbody id="dollCompletedList">
+                                <tr>
+                                    <td colspan="5">완료된 항목 없음</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
+    <!-- 성물 관리 -->
     <div id="artifactPage" class="page">
-        <div class="toolbar">
-            <button class="btn btn-home" onclick="showPage('homePage')">← 처음 화면</button>
-            <button class="btn btn-reset" onclick="resetGroup('artifact')">성물 초기화</button>
-            <input type="text" id="artifactSearch" class="search-box" placeholder="성물 이름 검색" onkeyup="filterGroup('artifact')">
-            <div class="summary">완료 개수: <span id="artifactCount">0</span> / 1</div>
-        </div>
+        <div class="manage-wrap">
+            <div class="toolbar">
+                <button class="btn btn-home" onclick="showPage('homePage')">← 처음 화면</button>
+                <button class="btn btn-reset" onclick="resetGroup('artifact')">성물 초기화</button>
+                <input type="text" id="artifactSearch" class="search-box" placeholder="성물 이름 검색" onkeyup="filterGroup('artifact')">
+                <div class="summary">완료 개수: <span id="artifactCount">0</span> / 1</div>
+            </div>
 
-        <div class="section">
-            <h2>성물 관리</h2>
-            <table>
-                <tr>
-                    <th>이 름</th>
-                    <th>이미지</th>
-                    <th>재 료</th>
-                    <th>수 량</th>
-                    <th>완 료</th>
-                </tr>
-                <tr data-group="artifact" data-key="artifact_0">
-                    <td class="name-cell">로즈마리의 창</td>
-                    <td><img src="images/로즈마리의 창.png" width="90" alt="로즈마리의 창"></td>
-                    <td>성물 코인</td>
-                    <td>300만개</td>
-                    <td><input type="checkbox"></td>
-                </tr>
-                <tr id="artifactEmpty" class="empty-row hidden-row">
-                    <td colspan="5">검색 결과 없음</td>
-                </tr>
-                <tr class="total">
-                    <td colspan="3">총 합</td>
-                    <td id="artifactTotal"></td>
-                    <td>-</td>
-                </tr>
-            </table>
-        </div>
+            <div class="manage-row">
+                <div class="manage-col">
+                    <div class="section">
+                        <h2>성물 관리</h2>
+                        <table>
+                            <tr>
+                                <th>이 름</th>
+                                <th>이미지</th>
+                                <th>재 료</th>
+                                <th>수 량</th>
+                                <th>완 료</th>
+                            </tr>
+                            <tr data-group="artifact" data-key="artifact_0">
+                                <td class="name-cell">로즈마리의 창</td>
+                                <td><img src="images/로즈마리의 창.png" alt="로즈마리의 창"></td>
+                                <td>성물 코인</td>
+                                <td>300만개</td>
+                                <td><input type="checkbox"></td>
+                            </tr>
+                            <tr id="artifactEmpty" class="empty-row hidden-row">
+                                <td colspan="5">검색 결과 없음</td>
+                            </tr>
+                            <tr class="total">
+                                <td colspan="3">총 합</td>
+                                <td id="artifactTotal"></td>
+                                <td>-</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
 
-        <div class="section" style="margin-top:20px;">
-            <h2>완료된 성물</h2>
-            <table>
-                <tr>
-                    <th>이 름</th>
-                    <th>이미지</th>
-                    <th>재 료</th>
-                    <th>수 량</th>
-                    <th>완 료</th>
-                </tr>
-                <tbody id="artifactCompletedList">
-                    <tr>
-                        <td colspan="5">완료된 항목 없음</td>
-                    </tr>
-                </tbody>
-            </table>
+                <div class="manage-col">
+                    <div class="section">
+                        <h2>완료된 성물</h2>
+                        <table>
+                            <tr>
+                                <th>이 름</th>
+                                <th>이미지</th>
+                                <th>재 료</th>
+                                <th>수 량</th>
+                                <th>완 료</th>
+                            </tr>
+                            <tbody id="artifactCompletedList">
+                                <tr>
+                                    <td colspan="5">완료된 항목 없음</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -733,7 +811,6 @@ let homeAutocompleteIndex = -1;
 
 function syncRowsByKey(key, checked){
     const rows = document.querySelectorAll("tr[data-key='" + key + "']");
-
     rows.forEach(row => {
         const checkbox = row.querySelector("input[type='checkbox']");
         if(checkbox){
@@ -908,7 +985,7 @@ function goHomeSearch(){
             }
         });
 
-        listInput.value = "";
+        listInput.value = homeInput.value;
 
         if(homeList){
             homeList.innerHTML = "";
@@ -922,24 +999,20 @@ function goHomeSearch(){
 }
 
 function updateListSectionVisibility(){
-    const transformVisible = document.querySelectorAll("#listPage tr.search-list-transform:not(.hidden-row)").length;
-    const dollVisible = document.querySelectorAll("#listPage tr.search-list-doll:not(.hidden-row)").length;
-    const artifactVisible = document.querySelectorAll("#listPage tr.search-list-artifact:not(.hidden-row)").length;
-
     const transformSection = document.querySelector(".list-transform-section");
     const dollSection = document.querySelector(".list-doll-section");
     const artifactSection = document.querySelector(".list-artifact-section");
 
     if(transformSection){
-        transformSection.style.display = transformVisible > 0 ? "" : "none";
+        transformSection.style.display = "";
     }
 
     if(dollSection){
-        dollSection.style.display = dollVisible > 0 ? "" : "none";
+        dollSection.style.display = "";
     }
 
     if(artifactSection){
-        artifactSection.style.display = artifactVisible > 0 ? "" : "none";
+        artifactSection.style.display = "";
     }
 }
 
@@ -1142,14 +1215,7 @@ function updateListCheckedVisibility(){
     const rows = document.querySelectorAll("#listPage tr[data-key]");
 
     rows.forEach(row => {
-        const checkbox = row.querySelector("input[type='checkbox']");
-        if(!checkbox) return;
-
-        if(checkbox.checked){
-            row.classList.add("hidden-row");
-        }else{
-            row.classList.remove("hidden-row");
-        }
+        row.classList.remove("hidden-row");
     });
 
     updateListTotals();
